@@ -1,20 +1,25 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+        disableConcurrentBuilds()
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Checkout desde Git') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Detener ambiente') {
+        stage('Detener contenedores') {
             steps {
                 sh 'docker compose down'
             }
         }
 
-        stage('Levantar ambiente') {
+        stage('Levantar contenedores') {
             steps {
                 sh 'docker compose up -d'
             }
