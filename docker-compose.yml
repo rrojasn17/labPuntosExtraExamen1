@@ -1,8 +1,8 @@
 services:
   db:
     image: mysql:8.0
-    container_name: wordpress_db
-    restart: unless-stopped
+    container_name: wpdb
+    restart: always
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -11,12 +11,12 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - wordpress_network
+      - wpnetwork
 
   wordpress:
     image: wordpress:latest
-    container_name: wordpress_app
-    restart: unless-stopped
+    container_name: wplab
+    restart: always
     depends_on:
       - db
     ports:
@@ -27,14 +27,14 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - wordpress_data:/var/www/html
+      - wpdata:/var/www/html
     networks:
-      - wordpress_network
+      - wpnetwork
 
 volumes:
   mysql_data:
-  wordpress_data:
+  wpdata:
 
 networks:
-  wordpress_network:
+  wpnetwork:
     driver: bridge
